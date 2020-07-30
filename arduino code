@@ -1,0 +1,33 @@
+#include <LiquidCrystal.h>
+#include <TroykaDHT.h>
+DHT dht(dhtpin, DHT11);
+LiquidCrystal lcd(rs,en,d4,d5,d6,d7);
+int speaker = speakerpin;
+void setup()
+{
+  lcd.begin(16 ,2);
+  dht.begin();
+  lcd.clear();
+  lcd.print("this is my");
+  lcd.setCursor(1,0);
+  lcd.print("fire alarm");
+  lcd.clear();
+}
+
+void loop()
+{
+  dht.read();
+  int x = dht.getTemperatureC();
+  if(x>70)
+  {
+    lcd.setCursor(0,0);
+    lcd.print("fire fire !!");
+    tone(speaker,250);
+  }
+  else{
+    lcd.setCursor(0,0);
+    lcd.print("TEMP : ");
+    lcd.setCursor(1,0);
+    lcd.print(x);
+  }
+}
